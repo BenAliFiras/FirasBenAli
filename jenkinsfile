@@ -8,10 +8,16 @@ pipeline {
                     url: "https://github.com/BenAliFiras/FirasBenAli.git"
             }
         }
+        stage('coverage test') {
+                            steps {
+                                script {
+                                    sh 'mvn clean test -P test jacoco:report'
+                                }
+                            }
+                            }
         stage('SonarQube analysis') {
             steps {
                 script {
-                    sh 'mvn clean'
                     sh 'mvn compile sonar:sonar -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=sonarrojectdeploy -Dsonar.projectKey=sonarrojectdeploy_projectsonar -Dsonar.login=2599d376806e2f80e713b0ba3d6c1d29dde2d6e4'
                 }
             }
