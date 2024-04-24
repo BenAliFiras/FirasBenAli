@@ -9,12 +9,12 @@ pipeline {
             }
         }
         stage('coverage test') {
-                            steps {
-                                script {
-                                    sh 'mvn clean test -P test jacoco:report'
-                                }
-                            }
-                            }
+             steps {
+                script {
+                    sh 'mvn clean test -P test jacoco:report'
+                }
+             }
+        }
         stage('SonarQube analysis') {
             steps {
                 script {
@@ -32,6 +32,30 @@ pipeline {
                 sh 'mvn deploy -DskipTests'
             }
         }
+        stage('Deploy Artifact to Dev') {
+            environment {
+                SPRING_PROFILES_ACTIVE = 'dev'
+            }
+            steps {
+                sh 'mvn deploy -DskipTests'
+            }
+        }
+        stage('Deploy Artifact to Test') {
+            environment {
+                SPRING_PROFILES_ACTIVE = 'test'
+            }
+            steps {
+                sh 'mvn deploy -DskipTests'
+            }
+        }
+        stage('Deploy Artifact to Prod') {
+            environment {
+                SPRING_PROFILES_ACTIVE = 'prod'
+            }
+            steps {
+                sh 'mvn deploy -DskipTests'
+            }
+        }
         stage('Build Docker image') {
             steps {
                 script {
@@ -45,6 +69,11 @@ pipeline {
                     sh 'docker compose up -d'
                 }
             }
+        }
+    }
+    post {
+        always {
+            cleanWs()
         }
     }
 }
