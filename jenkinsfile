@@ -71,4 +71,18 @@ pipeline {
             }
         }
     }
-}
+        post {
+            always {
+                emailext (
+                    subject: "Résultat du Pipeline: ${currentBuild.fullDisplayName}",
+                    body: """<p>Le pipeline '${env.JOB_NAME}' a été exécuté.</p>
+    <p>Status: ${currentBuild.currentResult}</p>
+    <p>Voir les détails ici: ${env.BUILD_URL}</p>""",
+                    recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                    to: 'amani.bouhrira@esen.tn'
+                )
+            }
+        }
+
+    }
+
