@@ -27,12 +27,12 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
-        stage('deploy Artifact') {
+        /* stage('deploy Artifact') {
             steps {
                 sh 'mvn deploy -DskipTests'
             }
-        }
-        stage('Deploy Artifact to Dev') {
+        } */
+        /* stage('Deploy Artifact to Dev') {
             environment {
                 SPRING_PROFILES_ACTIVE = 'dev'
             }
@@ -47,7 +47,7 @@ pipeline {
             steps {
                 sh 'mvn deploy -DskipTests'
             }
-        }
+        } */
         stage('Deploy Artifact to Prod') {
             environment {
                 SPRING_PROFILES_ACTIVE = 'prod'
